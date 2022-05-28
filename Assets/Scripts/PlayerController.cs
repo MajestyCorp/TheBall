@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour, IInitializer
     [SerializeField]
     private float maxSpeed = 5f;
     [SerializeField]
-    private float generateActionDelay = 1f;
+    private float generateOrderDelay = 1f;
 
     private Commands _commands;
     private Ball _myBall;
@@ -24,16 +24,14 @@ public class PlayerController : MonoBehaviour, IInitializer
     public void InitInstance()
     {
         Instance = this;
+
+        _myBall = Instantiate(ballPrefab);
+        _myBall.name = "PlayerBall";
+        _commands = new Commands(_myBall);
     }
 
     public void Initialize()
     { }
-
-    private void Awake()
-    {
-        _myBall = Instantiate(ballPrefab);
-        _myBall.name = "PlayerBall";
-    }
 
     private void OnEnable()
     {
@@ -46,26 +44,14 @@ public class PlayerController : MonoBehaviour, IInitializer
         AbilitySystem.Instance.Untrack(_myBall);
     }
 
-    public void AddAction(Action newAction)
-    {
-        newAction.Execute(_myBall);
-        _commands.AddAction(newAction); 
-    }
-
-    private void RandomMoveAction()
-    {
-        AddAction(new MoveAction(Random.Range(minSpeed, maxSpeed), Random.value * 360f));
-    }
-
     private IEnumerator GenerateMovement()
     {
         _myBall.Init();
-        _commands = new Commands();
 
         while (true)
         {
-            RandomMoveAction();
-            yield return new WaitForSeconds(generateActionDelay);
+            _myBall.DoOrder(new MoveOrder(Random.Range(minSpeed, maxSpeed), Random.value * 360f));
+            yield return new WaitForSeconds(generateOrderDelay);
         }
     }
 
@@ -77,11 +63,10 @@ public class PlayerController : MonoBehaviour, IInitializer
 
     private void ResetPlayer()
     {
-        AddAction(new DummyAction());
-        follower.StartPath(_commands.GetActionList());
+        _myBall.DoOrder(new DummyOrder());
+        follower.StartPath(_commands);
 
         StopAllCoroutines();
-        AbilitySystem.Instance.ResetAbilities();
         StartCoroutine(GenerateMovement());
     }
 }

@@ -18,33 +18,31 @@ public class AbilitySystem : MonoBehaviour, IInitializer
     }
 
     public void Initialize()
-    { }
+    {
+    }
 
     public void Track(Ball ball)
     {
         _assignedBall = ball;
+
+        StartAbilities();
     }
 
     public void Untrack(Ball ball)
     {
+        StopAbilities();
         _assignedBall = null;
     }
 
-    private void FixedUpdate()
-    {
-        CheckAbilities();
-    }
-
-    private void CheckAbilities()
-    {
-        if (_assignedBall != null)
-            for (int i = 0; i < abilities.Count; i++)
-                abilities[i].CheckState(_assignedBall);
-    }
-
-    public void ResetAbilities()
+    private void StartAbilities()
     {
         for (int i = 0; i < abilities.Count; i++)
-            abilities[i].Reset();
+            abilities[i].StartTrack(_assignedBall);
+    }
+
+    private void StopAbilities()
+    {
+        for (int i = 0; i < abilities.Count; i++)
+            abilities[i].StopTrack(_assignedBall);
     }
 }

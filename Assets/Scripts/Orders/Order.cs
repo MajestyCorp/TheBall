@@ -2,29 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Action
+public abstract class Order
 {
     public float Timestamp { get; private set; }
 
-    public Action()
+    public Order()
     {
         Timestamp = Time.time;
     }
     public abstract void Execute(Ball ball);
 }
 
-public class DummyAction : Action
+public class DummyOrder : Order
 {
     public override void Execute(Ball ball)
     { }
 }
 
-public class MoveAction : Action
+public class MoveOrder : Order
 {
     protected float _speed;
     protected Quaternion _rotation;
 
-    public MoveAction(float speed, float angle)
+    public MoveOrder(float speed, float angle)
     {
         _speed = speed;
         _rotation = Quaternion.Euler(0f, angle, 0f);
@@ -37,11 +37,11 @@ public class MoveAction : Action
     }
 }
 
-public class PaintAction : Action
+public class PaintOrder : Order
 {
     protected Color _color;
 
-    public PaintAction(Color color)
+    public PaintOrder(Color color)
     {
         _color = color;
     }

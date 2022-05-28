@@ -11,22 +11,22 @@ public class ScriptableAbility : ScriptableObject
     private ScriptableCondition condition;
 
     [SerializeField]
-    private ScriptableAction action;
+    private ScriptableOrder action;
 
-    public void CheckState(Ball ball)
+    public void StartTrack(Ball ball)
     {
-        if (condition.IsCheckSucceeded(ball) && !IsTriggered)
-            ExecuteAction();
+        condition.Activate(ball);
+        condition.OnTriggered += OnConditionTriggered;
     }
 
-    public void Reset()
+    public void StopTrack(Ball ball)
     {
-        IsTriggered = false;   
+        condition.Deactivate(ball);
+        condition.OnTriggered -= OnConditionTriggered;
     }
 
-    private void ExecuteAction()
+    private void OnConditionTriggered(Ball sender)
     {
-        IsTriggered = true;
-        PlayerController.Instance.AddAction(action.GetAction());
+        sender.DoOrder(action.GetOrder());
     }
 }

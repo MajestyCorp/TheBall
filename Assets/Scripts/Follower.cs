@@ -10,9 +10,9 @@ public class Follower : MonoBehaviour
     private CommandsReader _commandsReader;
     private Ball _myBall = null;
 
-    public void StartPath(IReadOnlyList<Action> actionList)
+    public void StartPath(Commands commands)
     {
-        _commandsReader = new CommandsReader(actionList);
+        _commandsReader = new CommandsReader(commands);
 
         StopAllCoroutines();
         StartCoroutine(FollowPath());
@@ -21,36 +21,36 @@ public class Follower : MonoBehaviour
     
     private IEnumerator FollowPath()
     {
-        Action initialAction = _commandsReader.GetNextAction();
-        Action nextAction = null;
+        Order initialOrder = _commandsReader.GetNextOrder();
+        Order nextOrder = null;
         float timeOffset = 0f;
 
-        if(initialAction != null)
+        if(initialOrder != null)
         {
-            Restart(initialAction);
-            timeOffset = initialAction.Timestamp;
+            Restart(initialOrder);
+            timeOffset = initialOrder.Timestamp;
         }
 
-        while(initialAction != null)
+        while(initialOrder != null)
         {
-            nextAction = _commandsReader.GetNextAction();
+            nextOrder = _commandsReader.GetNextOrder();
 
-            if(nextAction != null)
+            if(nextOrder != null)
             {
-                yield return new WaitForSeconds(nextAction.Timestamp - timeOffset);
-                timeOffset = nextAction.Timestamp;
-                nextAction.Execute(_myBall);
+                yield return new WaitForSeconds(nextOrder.Timestamp - timeOffset);
+                timeOffset = nextOrder.Timestamp;
+                nextOrder.Execute(_myBall);
             } else
             {
                 _commandsReader.Reset();
 
-                timeOffset = initialAction.Timestamp;
-                Restart(_commandsReader.GetNextAction());
+                timeOffset = initialOrder.Timestamp;
+                Restart(_commandsReader.GetNextOrder());
             }
         }    
     }
 
-    private void Restart(Action initialAction)
+    private void Restart(Order initialOrder)
     {
         if (_myBall == null)
         {
@@ -60,6 +60,6 @@ public class Follower : MonoBehaviour
         }
 
         _myBall.Init();
-        initialAction.Execute(_myBall);
+        initialOrder.Execute(_myBall);
     }
 }
