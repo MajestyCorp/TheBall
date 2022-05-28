@@ -10,12 +10,14 @@ public abstract class Action
     {
         Timestamp = Time.time;
     }
-    public virtual void Execute(Ball ball)
-    { }
+    public abstract void Execute(Ball ball);
 }
 
 public class DummyAction : Action
-{ }
+{
+    public override void Execute(Ball ball)
+    { }
+}
 
 public class MoveAction : Action
 {
@@ -30,8 +32,6 @@ public class MoveAction : Action
 
     public override void Execute(Ball ball)
     {
-        base.Execute(ball);
-
         ball.Speed = _speed;
         ball.Rotation = _rotation;
     }
@@ -48,7 +48,6 @@ public class PaintAction : Action
 
     public override void Execute(Ball ball)
     {
-        base.Execute(ball);
         ball.MeshColor = _color;
     }
 }

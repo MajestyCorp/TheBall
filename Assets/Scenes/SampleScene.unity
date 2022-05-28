@@ -132,8 +132,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 90334774}
+  - component: {fileID: 90334778}
   - component: {fileID: 90334775}
   - component: {fileID: 90334776}
+  - component: {fileID: 90334777}
   m_Layer: 0
   m_Name: System
   m_TagString: Untagged
@@ -186,6 +188,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballPrefab: {fileID: 6459696228192349321, guid: 27f144fa05b8781469441c46499f72b7, type: 3}
+--- !u!114 &90334777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90334773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669aa65f3ab83f542a31dd27447e29e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilities:
+  - {fileID: 11400000, guid: 5ee4aff167597c14698ac39a090645cd, type: 2}
+  - {fileID: 11400000, guid: 80334e95e81684a4890eea7072432ab2, type: 2}
+--- !u!114 &90334778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 90334773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9202cc1bebba643af589f86f70d82d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

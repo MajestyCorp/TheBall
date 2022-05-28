@@ -43,6 +43,8 @@ public class Follower : MonoBehaviour
             } else
             {
                 _commandsReader.Reset();
+
+                timeOffset = initialAction.Timestamp;
                 Restart(_commandsReader.GetNextAction());
             }
         }    
@@ -51,7 +53,11 @@ public class Follower : MonoBehaviour
     private void Restart(Action initialAction)
     {
         if (_myBall == null)
+        {
             _myBall = Instantiate(ballPrefab);
+            _myBall.transform.localScale = Vector3.one * 0.8f;
+            _myBall.name = "CloneBall";
+        }
 
         _myBall.Init();
         initialAction.Execute(_myBall);

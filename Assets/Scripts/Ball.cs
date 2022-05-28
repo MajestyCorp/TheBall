@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public float Speed { get; set; } = 0f;
+    public float Distance => _distance;
+    public float Speed { get; set; }
     public Quaternion Rotation { get { return transform.rotation; }
                                  set { transform.rotation = value; } }
     public Color MeshColor { set { SetColor(value); } }
@@ -25,7 +26,10 @@ public class Ball : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position += transform.forward * Speed * Time.fixedDeltaTime;
+        float deltaDist = Speed * Time.fixedDeltaTime;
+        transform.position += transform.forward * deltaDist;
+
+        _distance += deltaDist;
     }
 
     private void SetColor(Color newColor)

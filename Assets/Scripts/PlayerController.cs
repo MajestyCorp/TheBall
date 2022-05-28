@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tools;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IInitializer
 {
+    public static PlayerController Instance { get; private set; } = null;
+
     [SerializeField]
     private Ball ballPrefab;
     [SerializeField]
@@ -18,14 +21,29 @@ public class PlayerController : MonoBehaviour
     private Commands _commands;
     private Ball _myBall;
 
+    public void InitInstance()
+    {
+        Instance = this;
+    }
+
+    public void Initialize()
+    { }
+
     private void Awake()
     {
         _myBall = Instantiate(ballPrefab);
+        _myBall.name = "PlayerBall";
     }
 
     private void OnEnable()
     {
+        AbilitySystem.Instance.Track(_myBall);
         StartCoroutine(GenerateMovement());
+    }
+
+    private void OnDisable()
+    {
+        AbilitySystem.Instance.Untrack(_myBall);
     }
 
     public void AddAction(Action newAction)
@@ -63,6 +81,7 @@ public class PlayerController : MonoBehaviour
         follower.StartPath(_commands.GetActionList());
 
         StopAllCoroutines();
+        AbilitySystem.Instance.ResetAbilities();
         StartCoroutine(GenerateMovement());
     }
 }
