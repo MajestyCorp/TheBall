@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new speed", menuName = "Abilities/Conditions/By Speed")]
-public class SpeedCondition : ScriptableCondition
+public class SpeedCondition : ScriptableCondition, IActivator
 {
     [SerializeField]
     private float minSpeed = 3f;
 
-    public override void Activate(Ball ball)
+    public void Activate(Ball ball)
     {
         ball.OnSpeedChanged += OnSpeedChanged;
         ball.OnInitialized += OnInitialized;
     }
 
-    public override void Deactivate(Ball ball)
+    public void Deactivate(Ball ball)
     {
         ball.OnSpeedChanged -= OnSpeedChanged;
         ball.OnInitialized -= OnInitialized;

@@ -3,27 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new distance", menuName = "Abilities/Conditions/By Distance")]
-public class DistanceCondition : ScriptableCondition
+public class DistanceCondition : ScriptableCondition, IActivator, IChecker
 {
     [SerializeField]
     private float minDistance = 3f;
 
-    public override void Activate(Ball ball)
+    public void Activate(Ball ball)
     {
-        ball.OnDistanceChanged += OnDistanceChanged;
         ball.OnInitialized += OnInitialized;
     }
 
-    public override void Deactivate(Ball ball)
+    public void Check(Ball ball)
     {
-        ball.OnDistanceChanged -= OnDistanceChanged;
-        ball.OnInitialized -= OnInitialized;
+        if(ball.Distance >= minDistance && !Triggered)
+            InvokeTrigger(ball);
     }
 
-    private void OnDistanceChanged(Ball sender)
+    public void Deactivate(Ball ball)
     {
-        if (sender.Distance >= minDistance && !Triggered)
-            InvokeTrigger(sender);
+        ball.OnInitialized -= OnInitialized;
     }
 
     private void OnInitialized(Ball sender)

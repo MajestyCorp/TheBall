@@ -9,11 +9,20 @@ public abstract class ScriptableCondition : ScriptableObject
 
     public bool Triggered { get; protected set; } = false;
 
-    public abstract void Activate(Ball ball);
-    public abstract void Deactivate(Ball ball);
     public void InvokeTrigger(Ball sender)
     {
         Triggered = true;
         OnTriggered?.Invoke(sender);
     }
+}
+
+public interface IActivator
+{
+    void Activate(Ball ball);
+    void Deactivate(Ball ball);
+}
+
+public interface IChecker
+{
+    void Check(Ball ball);
 }

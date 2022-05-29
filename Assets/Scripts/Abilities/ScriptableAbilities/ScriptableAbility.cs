@@ -13,15 +13,17 @@ public class ScriptableAbility : ScriptableObject
     [SerializeField]
     private ScriptableOrder action;
 
-    public void StartTrack(Ball ball)
+    private AbilitySystem abilitySystem;
+
+    public void Initialize(AbilitySystem abilitySystem)
     {
-        condition.Activate(ball);
+        this.abilitySystem = abilitySystem;
+        abilitySystem.RegisterCondition(condition);
         condition.OnTriggered += OnConditionTriggered;
     }
 
-    public void StopTrack(Ball ball)
+    public void Deactivate()
     {
-        condition.Deactivate(ball);
         condition.OnTriggered -= OnConditionTriggered;
     }
 

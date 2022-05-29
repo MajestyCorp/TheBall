@@ -8,7 +8,6 @@ public class Ball : MonoBehaviour
     public delegate void OrderArgs(Ball sender, Order order);
     public event SenderArgs OnInitialized;
     public event SenderArgs OnSpeedChanged;
-    public event SenderArgs OnDistanceChanged;
     public event OrderArgs OnOrderReceived;
 
     public float Distance => _distance;
@@ -45,7 +44,6 @@ public class Ball : MonoBehaviour
         transform.position += transform.forward * deltaDist;
 
         _distance += deltaDist;
-        OnDistanceChanged?.Invoke(this);
     }
 
     private void SetSpeed(float value)
